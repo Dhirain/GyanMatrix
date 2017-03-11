@@ -5,27 +5,27 @@
     android:orientation="vertical">
 
     <LinearLayout
-        android:gravity="center"
         android:id="@+id/imagell"
         android:layout_width="match_parent"
         android:layout_height="250dp"
         android:layout_marginTop="10dp"
+        android:gravity="center"
         android:orientation="horizontal"
         android:weightSum="2">
 
         <ImageView
             android:id="@+id/image"
             android:layout_width="0dp"
+            android:layout_height="match_parent"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="5dp"
-            android:layout_height="match_parent"
             android:layout_weight="1" />
 
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
             android:layout_gravity="center"
+            android:layout_weight="1"
             android:orientation="vertical"
 
             android:paddingLeft="5dp">
@@ -43,60 +43,96 @@
                 android:textSize="15sp"
                 android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/country"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="10dp"
-                android:gravity="left"
-                android:text="country"
-                android:textColor="@color/textColor"
-                android:textSize="15sp"
-                android:drawablePadding="5dp"
+                android:layout_marginTop="5dp">
 
-                android:drawableLeft="@drawable/planet32"
-                 />
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/planet32" />
+
+                <TextView
+                    android:id="@+id/country"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:padding="5dp"
+                    android:gravity="left"
+                    android:text="country"
+                    android:textColor="@color/textColor"
+                    android:textSize="17sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp">
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/batball" />
 
             <TextView
                 android:id="@+id/runs"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginTop="10dp"
                 android:gravity="left"
+                android:padding="5dp"
                 android:text="runs"
                 android:textColor="@color/textColor"
-                android:textSize="15sp"
-                android:drawablePadding="5dp"
-                />
+                android:textSize="17sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp">
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/wickets" />
 
             <TextView
                 android:id="@+id/matches"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginTop="10dp"
                 android:gravity="left"
+                android:padding="5dp"
                 android:text="matches"
                 android:textColor="@color/textColor"
-                android:textSize="15sp"
-                android:drawablePadding="5dp"
-                />
+                android:textSize="17sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/fav_ll"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp">
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:id="@+id/my_fav_image"
+                    android:src="@drawable/icon_start_fill" />
 
             <TextView
                 android:id="@+id/my_fav"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginTop="10dp"
+                android:padding="5dp"
                 android:gravity="left"
                 android:text="My Favourite"
                 android:textColor="@color/textColor"
-                android:textSize="15sp"
-                android:drawableLeft="@drawable/icon_start_fill"
-                android:drawablePadding="5dp"
-                />
+                android:textSize="15sp" />
+            </LinearLayout>
 
         </LinearLayout>
 
@@ -104,16 +140,29 @@
     </LinearLayout>
 
     <TextView
-        android:layout_below="@+id/imagell"
-        android:layout_margin="10sp"
         android:id="@+id/description"
-        android:scrollbars="vertical"
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:textColor="#000000"
-        android:textSize="15sp"
+        android:layout_below="@+id/imagell"
+        android:layout_margin="10sp"
+        android:background="@drawable/blueedge"
+        android:scrollbars="vertical"
         android:text="fasdfasdffasdfasdfasdf"
-        android:background="@drawable/blueedge"/>
+        android:textColor="#000000"
+        android:textSize="15sp" />
+
+    <TextView
+        android:id="@+id/share"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/roundrectangel_blue"
+        android:gravity="center"
+        android:text="Share"
+        android:textColor="#FFFFFF"
+        android:textSize="25sp"
+        android:textStyle="bold" />
 
 
 </RelativeLayout>

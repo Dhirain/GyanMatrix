@@ -1,6 +1,5 @@
 package com.example.dj.gyanmatrix;
 
-import android.content.ContentValues;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -12,8 +11,6 @@ import android.widget.Button;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import nl.qbusict.cupboard.QueryResultIterable;
 
 import static nl.qbusict.cupboard.CupboardFactory.cupboard;
 
@@ -29,7 +26,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private SimpleDatabaseHelper simpleDatabaseHelper;
     private SQLiteDatabase db;
     boolean isData = false;
-    Button sortRunButton;
+    DbManager dbManager;
+    Button sortRunButton,sortMatchButton,filterFavButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,11 +39,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if(batsman == null)
             getDataFromNetwork();
         else
-            getFromDb();
-
-        List<BatsmenModel> a = getStarDataFromDB(1); //for starred
-        List<BatsmenModel> b = getSortedByRunDataFromDB();
+        {
+            mBatsmen=dbManager.getFromDb();
+            updateList();
+        }
     }
+
+
+
     private void updateList(){
         //mMainList.invalidate();
         mAdapter=new BastmenRecyclerAdapter(MainActivity.this,mBatsmen);
@@ -53,20 +54,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mAdapter.notifyDataSetChanged();
     }
 
-    private void getFromDb() {
-        QueryResultIterable<BatsmenModel> itr = cupboard().withDatabase(db).query(BatsmenModel.class).query();
-        Log.d("MainActivity", "From db");
-        for (BatsmenModel b : itr)
-            mBatsmen.add(b);
-        updateList();
-    }
+
 
     private void initView() {
         mMainList=(RecyclerView) findViewById(R.id.batsmen_ll);
+        sortRunButton=(Button) findViewById(R.id.sort_runs);
+        sortMatchButton=(Button) findViewById(R.id.sort_marches);
+        filterFavButton=(Button) findViewById(R.id.fav_button);
+
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(MainActivity.this);
         mMainList.setLayoutManager(mLayoutManager);
         mMainList.setHasFixedSize(true);
-        sortRunButton=(Button) findViewById(R.id.sort_runs);
+        sortMatchButton.setOnClickListener(this);
+        filterFavButton.setOnClickListener(this);
         sortRunButton.setOnClickListener(this);
     }
 
@@ -75,46 +75,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         db = simpleDatabaseHelper.getWritableDatabase();
         mBatsmen=new ArrayList<>();
         networkManger=new NetworkManger();
+        dbManager=new DbManager(getApplicationContext());
     }
 
-    private List<BatsmenModel> getSortedByRunDataFromDB(){
-        List<BatsmenModel> batsmenModelList = new ArrayList<>();
-
-        Iterable<BatsmenModel> itr = cupboard().withDatabase(db)
-                .query(BatsmenModel.class)
-                .orderBy("mTotalScore asc").query();
-
-        for (BatsmenModel batsmenModel : itr)
-            batsmenModelList.add(batsmenModel);
-
-        return batsmenModelList;
-    }
-
-    private List<BatsmenModel> getStarDataFromDB(int value){
-        List<BatsmenModel> batsmenModelList = new ArrayList<>();
-
-        Iterable<BatsmenModel> itr = cupboard().withDatabase(db)
-                .query(BatsmenModel.class)
-                .withSelection("mStar = ?", Integer.toString(value))
-                .orderBy("mTotalScore asc").query();
-
-        for (BatsmenModel batsmenModel : itr)
-            batsmenModelList.add(batsmenModel);
-
-        return batsmenModelList;
-    }
-
-    private int updateStarData(int id, int value){
-        ContentValues values = new ContentValues(1);
-        values.put("mStar", value);
-        // update all books where the title is 'android'
-        return cupboard().withDatabase(db).update(BatsmenModel.class, values, "_id = ?", Long.toString(id));
-    }
-
-    private int getListSize(int id, int value){
-        return cupboard().withDatabase(db)
-                .query(BatsmenModel.class).getCursor().getCount();
-    }
 
 
     private void getDataFromNetwork() {
@@ -124,10 +87,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             public void onRequestCompleted(List<BatsmenModel> batmenList) {
                 mBatsmen=batmenList;
                 Log.d("list",mBatsmen.toString());
-
                 updateList();
-
-
                 for(BatsmenModel batsman : mBatsmen){
                     long id = cupboard().withDatabase(db).put(batsman);
                     Log.d("MainActivity", "Saving batsman " + id);
@@ -139,24 +99,58 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.sort_runs:
                 clearAllState();
-                sortByRuns=true;
+                sortByRuns = true;
                 sortList();
+                break;
+            case R.id.sort_marches:
+                clearAllState();
+                sortByMatch = true;
+                sortList();
+                ;
+                break;
+            case R.id.fav_button:
+                clearAllState();
+                isFavSelect = true;
+                sortList();
+                break;
         }
-
     }
 
     private void clearAllState() {
+        sortByRuns=false;
+        sortByMatch=false;
+        isFavSelect=false;
         sortRunButton.setBackgroundResource(R.drawable.blueedge);
+        sortRunButton.setTextColor(getResources().getColor(R.color.black));
+        sortMatchButton.setBackgroundResource(R.drawable.blueedge);
+        sortMatchButton.setTextColor(getResources().getColor(R.color.black));
+        filterFavButton.setBackgroundResource(R.drawable.blueedge);
+        filterFavButton.setTextColor(getResources().getColor(R.color.black));
+        filterFavButton.setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(R.drawable.icon_start_fill),null,null,null);
+
     }
 
     private void sortList() {
         if(sortByRuns){
             sortRunButton.setBackgroundResource(R.drawable.roundrectangel_blue);
             sortRunButton.setTextColor(getResources().getColor(R.color.white));
-            mBatsmen=getSortedByRunDataFromDB();
+            mBatsmen=dbManager.getSortedByRunDataFromDB();
+            updateList();
+        }
+        else if(sortByMatch){
+            sortMatchButton.setBackgroundResource(R.drawable.roundrectangel_blue);
+            sortMatchButton.setTextColor(getResources().getColor(R.color.white));
+            mBatsmen=dbManager.getSortedByMatchDataFromDB();
+            updateList();
+        }
+        else if(isFavSelect){
+            filterFavButton.setBackgroundResource(R.drawable.roundrectangel_blue);
+            filterFavButton.setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(R.drawable.icon_start_empty),null,null,null);
+            filterFavButton.setTextColor(getResources().getColor(R.color.white));
+            mBatsmen=dbManager.getStarDataFromDB(1);
             updateList();
         }
     }
