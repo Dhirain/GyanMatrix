@@ -17,6 +17,7 @@ public class BatsmenModel implements Serializable {
     public final String     mDescription;
     public final int        mMatchPlayed;
     public final String     mCountry;
+    public final boolean    mStar;
 
     public BatsmenModel(JSONObject batsmen) throws JSONException
     {
@@ -27,6 +28,7 @@ public class BatsmenModel implements Serializable {
         mDescription=batsmen.optString("description");
         mMatchPlayed=batsmen.optInt("matches_played");
         mCountry=batsmen.optString("country");
+        mStar=false;
     }
 
 }

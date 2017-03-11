@@ -10,6 +10,8 @@ import android.util.Log;
 import java.util.ArrayList;
 import java.util.List;
 
+import nl.qbusict.cupboard.QueryResultIterable;
+
 import static nl.qbusict.cupboard.CupboardFactory.cupboard;
 
 public class MainActivity extends AppCompatActivity {
@@ -36,6 +38,11 @@ public class MainActivity extends AppCompatActivity {
 
         if(!isData)
             getDataFromNetwork();
+        else {
+            QueryResultIterable<BatsmenModel> itr = cupboard().withDatabase(db).query(BatsmenModel.class).query();
+            for (BatsmenModel batsman : itr)
+                mBatsmen.add(batsman);
+        }
 
         initView();
         getDataFromNetwork();
