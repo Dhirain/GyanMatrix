@@ -14,6 +14,7 @@ import nl.qbusict.cupboard.annotation.Column;
 public class BatsmenModel implements Serializable {
     public Long _id;
     public int        mId;
+    @Column("Name")
     public String     mName;
     public String     mImageURL;
 

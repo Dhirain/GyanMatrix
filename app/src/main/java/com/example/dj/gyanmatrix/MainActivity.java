@@ -11,6 +11,7 @@ import android.util.Log;
 import java.util.ArrayList;
 import java.util.List;
 
+import nl.qbusict.cupboard.DatabaseCompartment;
 import nl.qbusict.cupboard.QueryResultIterable;
 
 import static nl.qbusict.cupboard.CupboardFactory.cupboard;
@@ -56,6 +57,9 @@ public class MainActivity extends AppCompatActivity {
 
         List<BatsmenModel> a = getStarDataFromDB(1); //for starred
         List<BatsmenModel> b = getSortedByRunDataFromDB();
+
+        for(BatsmenModel bm : searchBatsman("south africa"))
+            Log.d("MainActivity", bm.mName);
     }
 
     private void initView() {
@@ -105,6 +109,12 @@ public class MainActivity extends AppCompatActivity {
         return cupboard().withDatabase(db)
                 .query(BatsmenModel.class).getCursor().getCount();
     }
+
+    private List<BatsmenModel> searchBatsman(String text){
+        return cupboard().withDatabase(db)
+                .query(BatsmenModel.class).withSelection("mCountry Like ?", text).query().list();
+    }
+
 
 
     private void getDataFromNetwork() {
