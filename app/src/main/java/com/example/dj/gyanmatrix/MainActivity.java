@@ -10,6 +10,7 @@ import android.util.Log;
 import java.util.ArrayList;
 import java.util.List;
 
+import nl.qbusict.cupboard.Cupboard;
 import nl.qbusict.cupboard.QueryResultIterable;
 
 import static nl.qbusict.cupboard.CupboardFactory.cupboard;
@@ -36,12 +37,14 @@ public class MainActivity extends AppCompatActivity {
 
         initVariables();
 
-        if(!isData)
+        BatsmenModel batsman = cupboard().withDatabase(db).get(BatsmenModel.class, 1L);
+        if(batsman == null)
             getDataFromNetwork();
         else {
             QueryResultIterable<BatsmenModel> itr = cupboard().withDatabase(db).query(BatsmenModel.class).query();
-            for (BatsmenModel batsman : itr)
-                mBatsmen.add(batsman);
+            Log.d("MainActivity", "From db");
+            for (BatsmenModel b : itr)
+                mBatsmen.add(b);
         }
 
         initView();
@@ -50,11 +53,41 @@ public class MainActivity extends AppCompatActivity {
 
     private void initView() {
         mMainList=(RecyclerView) findViewById(R.id.batsmen_ll);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(MainActivity.this);
+        mMainList.setLayoutManager(mLayoutManager);
+        mMainList.setHasFixedSize(true);
     }
 
     private void initVariables() {
         mBatsmen=new ArrayList<>();
         networkManger=new NetworkManger();
+    }
+
+    private List<BatsmenModel> getSortedByRunDataFromDB(){
+        List<BatsmenModel> batsmenModelList = new ArrayList<>();
+
+        Iterable<BatsmenModel> itr = cupboard().withDatabase(db)
+                .query(BatsmenModel.class)
+                .orderBy("mTotalScore").query();
+
+        for (BatsmenModel batsmenModel : itr)
+            batsmenModelList.add(batsmenModel);
+
+        return batsmenModelList;
+    }
+
+    private List<BatsmenModel> getStarDataFromDB(){
+        List<BatsmenModel> batsmenModelList = new ArrayList<>();
+
+        Iterable<BatsmenModel> itr = cupboard().withDatabase(db)
+                .query(BatsmenModel.class)
+                .withSelection("mStar = ?", "1")
+                .orderBy("mTotalScore").query();
+
+        for (BatsmenModel batsmenModel : itr)
+            batsmenModelList.add(batsmenModel);
+
+        return batsmenModelList;
     }
 
     private void getDataFromNetwork() {
@@ -66,9 +99,6 @@ public class MainActivity extends AppCompatActivity {
                 Log.d("list",mBatsmen.toString());
 
                 mAdapter=new BastmenRecyclerAdapter(MainActivity.this,mBatsmen);
-                RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(MainActivity.this);
-                mMainList.setLayoutManager(mLayoutManager);
-                mMainList.setHasFixedSize(true);
                 mMainList.setAdapter(mAdapter);
                 //mAdapter.notifyDataSetChanged();
 
