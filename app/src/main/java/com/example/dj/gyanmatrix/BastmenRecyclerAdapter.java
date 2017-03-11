@@ -14,7 +14,7 @@ import java.util.List;
  * Created by DJ on 11-03-2017.
  */
 
-public class BastmenRecyclerAdapter extends RecyclerView.Adapter<BastmenRecyclerAdapter.ViewHolder>  {
+public class BastmenRecyclerAdapter extends RecyclerView.Adapter<BastmenRecyclerAdapter.BatsmenItemHolder>  {
     Context mContext;
     List<BatsmenModel> mBatsmen;
     BatsmenModel mCurrentBatsman;
@@ -25,27 +25,29 @@ public class BastmenRecyclerAdapter extends RecyclerView.Adapter<BastmenRecycler
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public BatsmenItemHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.batsmen_list_item, parent, false);
-        return new ViewHolder(itemView);
+        return new BatsmenItemHolder(itemView);
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(BatsmenItemHolder holder, int position) {
         if(mBatsmen!=null){
             mCurrentBatsman=mBatsmen.get(position);
             initCardViewWithCurrentItem(holder);
         }
     }
 
-    private void initCardViewWithCurrentItem(final BastmenRecyclerAdapter.ViewHolder currentHolder)
+    private void initCardViewWithCurrentItem(final BatsmenItemHolder currentHolder)
     {
 
         if(null != mCurrentBatsman.mImageURL)
         {
             ImageUtils.setCircularImage(mContext,mCurrentBatsman.mImageURL,currentHolder.vBatsmenImage,R.drawable.icon_placeholder);
         }
+        currentHolder.vBatsmenName.setText(mCurrentBatsman.mName);
+        currentHolder.uBatsmenCountry.setText(mCurrentBatsman.mCountry);
 
 
 
@@ -56,11 +58,11 @@ public class BastmenRecyclerAdapter extends RecyclerView.Adapter<BastmenRecycler
         return mBatsmen.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public class BatsmenItemHolder extends RecyclerView.ViewHolder {
         public ImageView vBatsmenImage,vStar,vArrow;
         public TextView vBatsmenName,uBatsmenCountry;
 
-        public ViewHolder(View itemView) {
+        public BatsmenItemHolder(View itemView) {
             super(itemView);
             vBatsmenImage=(ImageView)itemView.findViewById(R.id.user_profile_pic);
             vStar=(ImageView)itemView.findViewById(R.id.star);

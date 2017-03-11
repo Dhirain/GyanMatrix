@@ -3,6 +3,7 @@ package com.example.dj.gyanmatrix;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 
@@ -32,9 +33,12 @@ public class MainActivity extends AppCompatActivity {
         db = simpleDatabaseHelper.getWritableDatabase();
 
         initVariables();
+
         if(!isData)
             getDataFromNetwork();
+
         initView();
+        getDataFromNetwork();
     }
 
     private void initView() {
@@ -52,8 +56,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onRequestCompleted(List<BatsmenModel> batmenList) {
                 mBatsmen=batmenList;
-                Log.d("list", mBatsmen.toString());
-                mAdapter=new BastmenRecyclerAdapter(getApplicationContext(), mBatsmen);
+                Log.d("list",mBatsmen.toString());
+
+                mAdapter=new BastmenRecyclerAdapter(MainActivity.this,mBatsmen);
+                RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(MainActivity.this);
+                mMainList.setLayoutManager(mLayoutManager);
+                mMainList.setHasFixedSize(true);
+                mMainList.setAdapter(mAdapter);
+                //mAdapter.notifyDataSetChanged();
 
                 for(BatsmenModel batsman : mBatsmen){
                     long id = cupboard().withDatabase(db).put(batsman);
