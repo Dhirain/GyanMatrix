@@ -22,6 +22,7 @@ public class MainActivity extends AppCompatActivity {
     private SimpleDatabaseHelper simpleDatabaseHelper;
     private SQLiteDatabase db;
 
+    boolean isData = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,7 +32,8 @@ public class MainActivity extends AppCompatActivity {
         db = simpleDatabaseHelper.getWritableDatabase();
 
         initVariables();
-        getDataFromNetwork();
+        if(!isData)
+            getDataFromNetwork();
         initView();
     }
 
@@ -50,14 +52,15 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onRequestCompleted(List<BatsmenModel> batmenList) {
                 mBatsmen=batmenList;
-                Log.d("list",mBatsmen.toString());
-                mAdapter=new BastmenRecyclerAdapter(getApplicationContext(),mBatsmen);
+                Log.d("list", mBatsmen.toString());
+                mAdapter=new BastmenRecyclerAdapter(getApplicationContext(), mBatsmen);
 
-                for(BatsmenModel batsman : mBatsmen)
-                cupboard().withDatabase(db).put(batsman);
+                for(BatsmenModel batsman : mBatsmen){
+                    long id = cupboard().withDatabase(db).put(batsman);
+                    Log.d("MainActivity", "Saving batsman " + id);
+                }
+                isData = true;
             }
         });
     }
-
-
 }
