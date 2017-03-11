@@ -121,7 +121,7 @@ public class MainActivity extends AppCompatActivity {
 
     private List<BatsmenModel> searchBatsmanByName(String text){
         return cupboard().withDatabase(db)
-                .query(BatsmenModel.class).withSelection("mName = ?", text).query().list();
+                .query(BatsmenModel.class).withSelection("Name = ?", text).query().list();
     }
 
     private void getDataFromNetwork() {
