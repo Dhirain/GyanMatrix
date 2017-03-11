@@ -5,6 +5,7 @@
     android:orientation="vertical">
 
     <LinearLayout
+        android:gravity="center"
         android:id="@+id/imagell"
         android:layout_width="match_parent"
         android:layout_height="250dp"
@@ -15,6 +16,8 @@
         <ImageView
             android:id="@+id/image"
             android:layout_width="0dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="5dp"
             android:layout_height="match_parent"
             android:layout_weight="1" />
 
@@ -24,6 +27,7 @@
             android:layout_weight="1"
             android:layout_gravity="center"
             android:orientation="vertical"
+
             android:paddingLeft="5dp">
 
             <TextView
@@ -90,6 +94,7 @@
                 android:text="My Favourite"
                 android:textColor="@color/textColor"
                 android:textSize="15sp"
+                android:drawableLeft="@drawable/icon_start_fill"
                 android:drawablePadding="5dp"
                 />
 
@@ -97,9 +102,12 @@
 
 
     </LinearLayout>
+
     <TextView
-        android:id="@+id/description"
         android:layout_below="@+id/imagell"
+        android:layout_margin="10sp"
+        android:id="@+id/description"
+        android:scrollbars="vertical"
         android:layout_width="match_parent"
         android:layout_height="200dp"
         android:textColor="#000000"
