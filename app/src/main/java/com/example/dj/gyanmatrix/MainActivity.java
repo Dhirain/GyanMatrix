@@ -1,5 +1,6 @@
 package com.example.dj.gyanmatrix;
 
+import android.content.ContentValues;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -10,7 +11,6 @@ import android.util.Log;
 import java.util.ArrayList;
 import java.util.List;
 
-import nl.qbusict.cupboard.Cupboard;
 import nl.qbusict.cupboard.QueryResultIterable;
 
 import static nl.qbusict.cupboard.CupboardFactory.cupboard;
@@ -54,8 +54,8 @@ public class MainActivity extends AppCompatActivity {
             mMainList.setHasFixedSize(true);
         }
 
-        getStarDataFromDB();
-        getSortedByRunDataFromDB();
+        List<BatsmenModel> a = getStarDataFromDB(1); //for starred
+        List<BatsmenModel> b = getSortedByRunDataFromDB();
     }
 
     private void initView() {
@@ -80,12 +80,12 @@ public class MainActivity extends AppCompatActivity {
         return batsmenModelList;
     }
 
-    private List<BatsmenModel> getStarDataFromDB(){
+    private List<BatsmenModel> getStarDataFromDB(int value){
         List<BatsmenModel> batsmenModelList = new ArrayList<>();
 
         Iterable<BatsmenModel> itr = cupboard().withDatabase(db)
                 .query(BatsmenModel.class)
-                .withSelection("mStar = ?", "1")
+                .withSelection("mStar = ?", Integer.toString(value))
                 .orderBy("mTotalScore asc").query();
 
         for (BatsmenModel batsmenModel : itr)
@@ -93,6 +93,19 @@ public class MainActivity extends AppCompatActivity {
 
         return batsmenModelList;
     }
+
+    private int updateStarData(int id, int value){
+        ContentValues values = new ContentValues(1);
+        values.put("mStar", value);
+        // update all books where the title is 'android'
+        return cupboard().withDatabase(db).update(BatsmenModel.class, values, "_id = ?", Long.toString(id));
+    }
+
+    private int getListSize(int id, int value){
+        return cupboard().withDatabase(db)
+                .query(BatsmenModel.class).getCursor().getCount();
+    }
+
 
     private void getDataFromNetwork() {
 
