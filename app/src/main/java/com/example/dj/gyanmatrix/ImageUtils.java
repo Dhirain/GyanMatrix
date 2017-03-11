@@ -14,7 +14,8 @@ public class ImageUtils {
 
 
     public static void setCircularImage(Context context, String url, ImageView imageView, int stubImage) {
-        Picasso.with(context).load(url).
+        if(!url.isEmpty())
+            Picasso.with(context).load(url).
                 transform(new CircleImageTransformer()).
                 centerCrop().fit()
                 .placeholder(ContextCompat.getDrawable(context, stubImage))
