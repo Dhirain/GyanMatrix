@@ -5,19 +5,36 @@ import org.json.JSONObject;
 
 import java.io.Serializable;
 
+import nl.qbusict.cupboard.annotation.Column;
+
 /**
  * Created by DJ on 11-03-2017.
  */
 
 public class BatsmenModel implements Serializable {
-    public final int        mId;
-    public final String     mName;
-    public final String     mImageURL;
-    public final int        mTotalScore;
-    public final String     mDescription;
-    public final int        mMatchPlayed;
-    public final String     mCountry;
-    public final int    mStar;
+    public Long _id;
+    public int        mId;
+    public String     mName;
+    public String     mImageURL;
+
+    @Column("mTotalScore")
+    public int        mTotalScore;
+    public String     mDescription;
+    public int        mMatchPlayed;
+    public String     mCountry;
+    @Column("mStar")
+    public int        mStar;
+
+    public BatsmenModel(){
+        mId=-1;
+        mName="";
+        mImageURL="";
+        mTotalScore=-1;
+        mDescription="";
+        mMatchPlayed=-1;
+        mCountry="";
+        mStar=0;
+    }
 
     public BatsmenModel(JSONObject batsmen) throws JSONException
     {

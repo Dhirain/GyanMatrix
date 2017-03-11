@@ -36,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
         db = simpleDatabaseHelper.getWritableDatabase();
 
         initVariables();
+        initView();
 
         BatsmenModel batsman = cupboard().withDatabase(db).get(BatsmenModel.class, 1L);
         if(batsman == null)
@@ -45,17 +46,20 @@ public class MainActivity extends AppCompatActivity {
             Log.d("MainActivity", "From db");
             for (BatsmenModel b : itr)
                 mBatsmen.add(b);
+
+            mAdapter=new BastmenRecyclerAdapter(MainActivity.this,mBatsmen);
+            mMainList.setAdapter(mAdapter);
+            RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(MainActivity.this);
+            mMainList.setLayoutManager(mLayoutManager);
+            mMainList.setHasFixedSize(true);
         }
 
-        initView();
-        getDataFromNetwork();
+        getStarDataFromDB();
+        getSortedByRunDataFromDB();
     }
 
     private void initView() {
         mMainList=(RecyclerView) findViewById(R.id.batsmen_ll);
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(MainActivity.this);
-        mMainList.setLayoutManager(mLayoutManager);
-        mMainList.setHasFixedSize(true);
     }
 
     private void initVariables() {
@@ -68,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
 
         Iterable<BatsmenModel> itr = cupboard().withDatabase(db)
                 .query(BatsmenModel.class)
-                .orderBy("mTotalScore").query();
+                .orderBy("mTotalScore asc").query();
 
         for (BatsmenModel batsmenModel : itr)
             batsmenModelList.add(batsmenModel);
@@ -82,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
         Iterable<BatsmenModel> itr = cupboard().withDatabase(db)
                 .query(BatsmenModel.class)
                 .withSelection("mStar = ?", "1")
-                .orderBy("mTotalScore").query();
+                .orderBy("mTotalScore asc").query();
 
         for (BatsmenModel batsmenModel : itr)
             batsmenModelList.add(batsmenModel);
@@ -100,6 +104,9 @@ public class MainActivity extends AppCompatActivity {
 
                 mAdapter=new BastmenRecyclerAdapter(MainActivity.this,mBatsmen);
                 mMainList.setAdapter(mAdapter);
+                RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(MainActivity.this);
+                mMainList.setLayoutManager(mLayoutManager);
+                mMainList.setHasFixedSize(true);
                 //mAdapter.notifyDataSetChanged();
 
                 for(BatsmenModel batsman : mBatsmen){
