@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/imagell"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal"
+        android:weightSum="2">
+
+        <ImageView
+            android:id="@+id/image"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            android:orientation="vertical"
+            android:paddingLeft="5dp">
+
+            <TextView
+                android:id="@+id/player_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/roundrectangel_blue"
+                android:gravity="center"
+                android:text="PlayerName"
+                android:textColor="#FFFFFF"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/country"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:gravity="left"
+                android:text="country"
+                android:textColor="@color/textColor"
+                android:textSize="15sp"
+                android:drawablePadding="5dp"
+
+                android:drawableLeft="@drawable/planet32"
+                 />
+
+            <TextView
+                android:id="@+id/runs"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:gravity="left"
+                android:text="runs"
+                android:textColor="@color/textColor"
+                android:textSize="15sp"
+                android:drawablePadding="5dp"
+                />
+
+            <TextView
+                android:id="@+id/matches"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:gravity="left"
+                android:text="matches"
+                android:textColor="@color/textColor"
+                android:textSize="15sp"
+                android:drawablePadding="5dp"
+                />
+
+            <TextView
+                android:id="@+id/my_fav"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:gravity="left"
+                android:text="My Favourite"
+                android:textColor="@color/textColor"
+                android:textSize="15sp"
+                android:drawablePadding="5dp"
+                />
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+    <TextView
+        android:id="@+id/description"
+        android:layout_below="@+id/imagell"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:textColor="#000000"
+        android:textSize="15sp"
+        android:text="fasdfasdffasdfasdfasdf"
+        android:background="@drawable/blueedge"/>
+
+
+</RelativeLayout>
