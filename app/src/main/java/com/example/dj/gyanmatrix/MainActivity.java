@@ -11,7 +11,6 @@ import android.util.Log;
 import java.util.ArrayList;
 import java.util.List;
 
-import nl.qbusict.cupboard.DatabaseCompartment;
 import nl.qbusict.cupboard.QueryResultIterable;
 
 import static nl.qbusict.cupboard.CupboardFactory.cupboard;
@@ -58,7 +57,11 @@ public class MainActivity extends AppCompatActivity {
         List<BatsmenModel> a = getStarDataFromDB(1); //for starred
         List<BatsmenModel> b = getSortedByRunDataFromDB();
 
-        for(BatsmenModel bm : searchBatsman("south africa"))
+
+        for(BatsmenModel bm : searchBatsmanByCountry("south africa"))
+            Log.d("MainActivity", bm.mName);
+
+        for(BatsmenModel bm : searchBatsmanByName("sachin"))
             Log.d("MainActivity", bm.mName);
     }
 
@@ -110,12 +113,16 @@ public class MainActivity extends AppCompatActivity {
                 .query(BatsmenModel.class).getCursor().getCount();
     }
 
-    private List<BatsmenModel> searchBatsman(String text){
+    private List<BatsmenModel> searchBatsmanByCountry(String text){
         return cupboard().withDatabase(db)
                 .query(BatsmenModel.class).withSelection("mCountry Like ?", text).query().list();
     }
 
 
+    private List<BatsmenModel> searchBatsmanByName(String text){
+        return cupboard().withDatabase(db)
+                .query(BatsmenModel.class).withSelection("mName = ?", text).query().list();
+    }
 
     private void getDataFromNetwork() {
 
