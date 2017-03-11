@@ -26,14 +26,7 @@ public class BatsmenModel implements Serializable {
     public int        mStar;
 
     public BatsmenModel(){
-        mId=-1;
-        mName="";
-        mImageURL="";
-        mTotalScore=-1;
-        mDescription="";
-        mMatchPlayed=-1;
-        mCountry="";
-        mStar=0;
+
     }
 
     public BatsmenModel(JSONObject batsmen) throws JSONException

@@ -54,7 +54,7 @@ public class DescriptionActivity extends AppCompatActivity implements View.OnCli
     private void setAppBar() {
         setTitle("Profile");
         mActionBar = getSupportActionBar();
-        mActionBar.setHomeAsUpIndicator(R.drawable.icon_back);
+        mActionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back);
         mActionBar.setDisplayHomeAsUpEnabled(true); //to activate back pressed on home button press
         mActionBar.setDisplayShowHomeEnabled(false);
     }
